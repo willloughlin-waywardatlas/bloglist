@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const blogs = [
   {
@@ -6,6 +7,7 @@ const blogs = [
     title: "React patterns",
     author: "Michael Chan",
     url: "https://reactpatterns.com/",
+    user: "68274144a840d1a5140ae449",
     likes: 7,
     __v: 0
   },
@@ -62,6 +64,50 @@ const singleBlog = [
   }
 ]
 
+const users = [
+  {
+    username: "pineconethegreenmile",
+    name: "John Smith",
+    password: "lorem",
+  },
+  {
+    username: "skylabmarsexpressrat",
+    name: "Selena Strauss",
+    password: "ipsum",
+  },
+  {
+    username: "articmoongladeshrimp",
+    name: "Graham Indigo",
+    password: "alchemy",
+  },
+  {
+    username: "tropicalfernlogtoast",
+    name: "Felicity Faux",
+    password: "fraud",
+  },
+  {
+    username: "puppyaltopomegranate",
+    name: "Simon Pomme",
+    password: "finance",
+  },
+  {
+    username: "pruneseatangerinebat",
+    name: "Geraldine Dietler",
+    password: "pumpkin",
+  },
+  {
+    username: "tennisnotescrocodile",
+    name: "Marcus White",
+    password: "flooring",
+  }
+]
+
+const testUser = {
+  username: "lionelthesheep",
+  name: "lionel large",
+  password: "grapejuice"
+}
+
 const nonExistingId = async () => {
   const blog = new Blog({ title: 'willremovethissoon' })
   await blog.save()
@@ -75,8 +121,16 @@ const blogsInDb = async () => {
   return blogs.map(blog => blog.toJSON())
 }
 
+const usersInDb = async () => {
+  const users = await User.find({})
+  return users.map(user => user.toJSON())
+}
+
 module.exports = {
   blogs,
+  users,
+  testUser,
   singleBlog,
   blogsInDb,
+  usersInDb,
 }

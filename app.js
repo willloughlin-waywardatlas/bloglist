@@ -1,8 +1,12 @@
 const config = require('./utils/config.js')
+require('express-async-errors')
 const express = require('express')
 const logger = require('./utils/logger.js')
+const middleware = require('./utils/middleware')
 const Blog = require('./models/blog')
 const blogsRouter = require('./controllers/blogs')
+const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 
 const mongoose = require('mongoose')
 
@@ -20,6 +24,18 @@ mongoose
   })
 
 app.use(express.json())
-app.use('/api/blogs', blogsRouter)
+if(process.env.NODE_ENV !== 'test'){
+  app.use(middleware.requestLogger)
+}
+app.use(middleware.tokenExtractor)
+
+app.use('/api/login', loginRouter)
+app.use('/api/blogs', middleware.userExtractor, blogsRouter)
+app.use('/api/users', usersRouter)
+
+
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
+
 
 module.exports = app
